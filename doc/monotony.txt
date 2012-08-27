@@ -1,0 +1,18 @@
+*monotony.txt*  Plugin for automating monotonous coding tasks
+
+Commands:
+:Fnsort {c/h}
+  Alphabetically sorts functions declared in a header file (h) or in a source
+  file (c). Note that the plugin will not handle intermixed functions within a
+  header. For this to work the source functions must be split by:
+    //-----
+    //-----
+  while the header functions must be split with doxygen-style blocks.
+
+:Fnformat
+  Reformats lines exceeding 80 characters
+
+:GSComment {range}
+  Automatically populates a doxygen comment block for a get/set function.
+  Currently only handles up to one function argument. Select the function with
+  visual mode (including the empty doxygen block).
