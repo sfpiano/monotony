@@ -171,6 +171,25 @@ fun! GSComment() range
 
 endfun
 
+com! -nargs=1 OpenSource call OpenSource(<f-args>)
+fun! OpenSource(filename)
+  let findCmd = "find $VIMSEARCHPATH -name '".a:filename."' -not -iwholename '*.o'"
+  let filelist = split(system(findCmd), '\n')
+  let counter = 0
+  for foundFile in filelist
+    exe 'sview '.l:foundFile
+  endfor
+endfun
+
+com! -nargs=0 RetabDecl call RetabDecl()
+fun! RetabDecl()
+  let curline = line('.')
+  exe 's/static //'
+  normal! =2j
+  normal! j
+  exe 's/;/{}/'
+endfun
+
 " Handle compatible mode, part 2                                           {{{1
 let &cpo = s:savecpo
 unlet s:savecpo
