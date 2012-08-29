@@ -71,7 +71,9 @@ fun! Fnsort(type) range
   " FNSTART//------@@@//------@@@void@@@fn()@@@{@@@  foo();@@@}FNEND@@@
   let range = a:firstline . ',' . lastline
   if a:type == 'c'
-    exe range . "sort/\\w@@@/"
+    " Find the first occurrence of a letter/*/& followed by @@@ and sort on
+    " the text that follows.
+    exe range . "sort/[A-Za-z\|&\|*]@@@/"
   else
     exe range . 'sort/\/\/-\+@@@.*\/\/-\+@@@.\{-}@@@/'
   endif
