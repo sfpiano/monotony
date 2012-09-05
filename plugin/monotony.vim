@@ -90,10 +90,24 @@ fun! FnFormat()
   " Mark the starting line
   let firstline = line('.')
   if strlen(getline(firstline)) > 80
-    " Find the first open paren/equals and add a newline after it
-    exe a:firstline . ',' . a:lastline . 's/\([(=]\)/\1\r'
+    let regex = ""
+
+    " First split the line after an equality operator
+    if search('=', 'n', firstline) > 0
+      let regex = 's/\(=\+\)/\1\r'
+    " Next check for an open paren not immediately followed by a close paren
+    elseif search('([^)]', 'n', firstline) > 0
+      let regex = 's/\((\)/\1\r'
+    " Default case is to split on spaces
+    elseif search(' ', 'n', firstline) > 0
+      let regex = 's/\([^ ] \)/\1\r'
+    endif
+
+    exe a:firstline . ',' . a:lastline . regex
+
     " Add newlines after every comma in the remaining text
     exe (firstline+1) . ',' . (firstline+1) . 's/,/,\r/eg'
+
     " Indent the code
     let cmd = '='.(line('.')-firstline).'k'
     exe 'normal! '.cmd
